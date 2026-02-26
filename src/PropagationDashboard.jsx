@@ -3,7 +3,7 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp } from 'lucide-re
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const APP_VERSION  = '1.0.0'
+const APP_VERSION  = '1.0.1'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
 const CORS_PROXY   = 'https://corsproxy.io/?'
