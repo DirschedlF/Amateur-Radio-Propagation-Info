@@ -5,8 +5,8 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp } from 'lucide-re
 
 const APP_VERSION  = '1.0.1'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
+const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
-const CORS_PROXY   = 'https://corsproxy.io/?'
 const AUTO_REFRESH = 15 * 60 * 1000 // 15 minutes
 
 // Bands with their HamQSL group name.
@@ -72,10 +72,8 @@ async function fetchHamQSL() {
     if (!r.ok) throw new Error(`HTTP ${r.status}`)
     text = await r.text()
   } catch {
-    // HamQSL has no CORS headers — fall back to a CORS proxy
-    const r = await fetch(CORS_PROXY + encodeURIComponent(HAMQSL_URL), {
-      headers: { 'Cache-Control': 'no-cache' },
-    })
+    // HamQSL has no CORS headers — fall back to our Cloudflare Worker proxy
+    const r = await fetch(HAMQSL_PROXY)
     if (!r.ok) throw new Error(`Proxy HTTP ${r.status}`)
     text = await r.text()
   }

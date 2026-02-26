@@ -17,7 +17,7 @@ The application is a **read-only, client-side-only dashboard** with no user inpu
 
 | ID | Severity | Title |
 |----|----------|-------|
-| SEC-01 | 🟡 LOW | Third-party CORS proxy as data channel |
+| SEC-01 | ✅ RESOLVED | Third-party CORS proxy as data channel |
 | SEC-02 | 🟡 LOW | No Content Security Policy (CSP) |
 | SEC-03 | 🟡 LOW | GitHub Actions pinned to major-version tags, not commit SHAs |
 | INFO-01 | ℹ️ INFO | npm audit: 0 known vulnerabilities |
@@ -27,30 +27,21 @@ The application is a **read-only, client-side-only dashboard** with no user inpu
 
 ## Detailed Findings
 
-### SEC-01 — Third-party CORS proxy as data channel
+### SEC-01 — ~~Third-party CORS proxy as data channel~~ — RESOLVED
 
-**Severity:** Low
-**File:** `src/PropagationDashboard.jsx:9,76`
+**Severity:** ~~Low~~ → ✅ Resolved in v1.0.2
+**File:** `src/PropagationDashboard.jsx:9`
 
-**Description:**
-HamQSL does not send CORS headers, so the app falls back to routing the request through `https://corsproxy.io/` — a public, free, third-party service.
+**Resolution:**
+A self-hosted Cloudflare Worker (`https://hamqsl-proxy.fritz-a2e.workers.dev`) now serves as the CORS proxy. The Worker fetches HamQSL directly, adds `Access-Control-Allow-Origin: *` and `Cache-Control: no-store` headers, and returns the response. The third-party `corsproxy.io` dependency has been eliminated.
 
 ```js
-const CORS_PROXY = 'https://corsproxy.io/?'
+const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 // ...
-const r = await fetch(CORS_PROXY + encodeURIComponent(HAMQSL_URL))
+const r = await fetch(HAMQSL_PROXY)
 ```
 
-A compromised or malicious proxy could return doctored XML (e.g., falsified solar index values or manipulated band conditions).
-
-**Mitigating factors:**
-- The proxy is only used when a direct fetch fails (CORS block), which does not happen in same-origin contexts (standalone file, local dev server).
-- All XML values are extracted via `.textContent` (never `innerHTML`), so XSS via injected HTML markup is not possible.
-- The application is read-only; no user data passes through the proxy.
-- Displayed values are purely informational (amateur radio band conditions) — there is no financial or safety-critical use.
-
-**Recommendation:**
-Accept the risk for v1.x. For a future version, consider self-hosting a lightweight CORS proxy (e.g., a Cloudflare Worker) to eliminate reliance on a third-party service.
+The Cloudflare Worker source is included in the repository under `cloudflare-worker/`.
 
 ---
 
