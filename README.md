@@ -22,6 +22,10 @@ Or download the standalone HTML file from the [Releases](https://github.com/Dirs
 
 ---
 
+![Screenshot](doc/screenshot.png)
+
+---
+
 ## Features
 
 ### Solar Indices
