@@ -331,7 +331,7 @@ export default function PropagationDashboard() {
                   {BANDS.map(({ name, group, shared }) => (
                     <tr
                       key={name}
-                      className={`border-b border-gray-800/40 last:border-0 hover:bg-gray-800/20 transition-colors ${shared ? 'opacity-55' : ''}`}
+                      className="border-b border-gray-800/40 last:border-0 hover:bg-gray-800/20 transition-colors"
                     >
                       <td className="px-5 py-3 font-mono font-bold text-white">{name}</td>
                       <td className="px-5 py-3 text-center">
