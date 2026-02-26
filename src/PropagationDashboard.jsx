@@ -193,6 +193,7 @@ export default function PropagationDashboard() {
   const [error,       setError]       = useState(null)
   const [lastUpdated, setLastUpdated] = useState(null)
   const [showNoaa,    setShowNoaa]    = useState(false)
+  const [showWidget,  setShowWidget]  = useState(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -347,6 +348,35 @@ export default function PropagationDashboard() {
               <p className="px-5 py-2.5 text-[11px] text-gray-600 border-t border-gray-800/40">
                 Abgedunkelte Zeilen teilen denselben Gruppenindikator mit dem darüber stehenden Band.
               </p>
+            </div>
+
+            {/* ── HamQSL solar widget ── */}
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+              <button
+                onClick={() => setShowWidget(v => !v)}
+                className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition-colors text-left"
+              >
+                <div>
+                  <h2 className="font-semibold text-gray-100">HamQSL Solar-Widget</h2>
+                  <p className="text-xs text-gray-500 mt-0.5">hamqsl.com — visuelles Propagations-Banner</p>
+                </div>
+                {showWidget
+                  ? <ChevronUp   className="w-4 h-4 text-gray-500 shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                }
+              </button>
+              {showWidget && (
+                <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40 flex justify-center">
+                  <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noreferrer"
+                     title="Click to add Solar-Terrestrial Data to your website!">
+                    <img
+                      src="https://www.hamqsl.com/solar101vhf.php"
+                      alt="HamQSL Solar-Terrestrial Data"
+                      className="max-w-full rounded"
+                    />
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* ── NOAA 3-day forecast ── */}
