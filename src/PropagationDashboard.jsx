@@ -9,6 +9,15 @@ const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
 const AUTO_REFRESH = 15 * 60 * 1000 // 15 minutes
 
+const PROP_LINKS = [
+  { name: 'DR2W DX Propagation',         desc: 'Europa · 10m · Live-Karte',          url: 'https://propagation.dr2w.de/dxprop.php?area=europe&band=10M&mode=1&time=utc' },
+  { name: 'VOACAP HF Prediction',        desc: 'Point-to-Point HF-Vorhersage',       url: 'https://www.voacap.com/hf/' },
+  { name: 'Proppy',                      desc: 'HF-Ausbreitungsprognose (Area)',      url: 'https://soundbytes.asia/proppy/area' },
+  { name: 'NOAA Space Weather Dashboard',desc: 'Echtzeit-Weltraumwetter (NOAA)',      url: 'https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard' },
+  { name: 'QSL.net Propagation',         desc: 'DX-Ausbreitung & Ressourcen',        url: 'https://dx.qsl.net/propagation/index.html' },
+  { name: 'DXView HF Perspective',       desc: 'Greyline & Bänder · JN58TC',         url: 'https://hf.dxview.org/perspective/JN58TC' },
+]
+
 // Bands with their HamQSL group name.
 // HamQSL provides one condition per group (day + night), shared by the bands in it.
 const BANDS = [
@@ -220,6 +229,7 @@ export default function PropagationDashboard() {
   const [lastUpdated, setLastUpdated] = useState(null)
   const [showNoaa,    setShowNoaa]    = useState(false)
   const [showWidget,  setShowWidget]  = useState(false)
+  const [showLinks,   setShowLinks]   = useState(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -404,6 +414,44 @@ export default function PropagationDashboard() {
                       className="max-w-full rounded"
                     />
                   </a>
+                </div>
+              )}
+            </div>
+
+            {/* ── Propagation links ── */}
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+              <button
+                onClick={() => setShowLinks(v => !v)}
+                className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition-colors text-left"
+              >
+                <div>
+                  <h2 className="font-semibold text-gray-100">Propagations-Links</h2>
+                  <p className="text-xs text-gray-500 mt-0.5">Externe Werkzeuge & Vorhersagen</p>
+                </div>
+                {showLinks
+                  ? <ChevronUp   className="w-4 h-4 text-gray-500 shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                }
+              </button>
+              {showLinks && (
+                <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {PROP_LINKS.map(({ name, desc, url }) => (
+                      <a
+                        key={url}
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 transition-colors group"
+                      >
+                        <span className="text-base leading-none mt-0.5">🔗</span>
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-gray-200 group-hover:text-white truncate">{name}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">{desc}</div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
