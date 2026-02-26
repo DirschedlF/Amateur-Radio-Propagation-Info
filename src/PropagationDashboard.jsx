@@ -12,14 +12,10 @@ const AUTO_REFRESH = 15 * 60 * 1000 // 15 minutes
 // Bands with their HamQSL group name.
 // HamQSL provides one condition per group (day + night), shared by the bands in it.
 const BANDS = [
-  { name: '80m', group: '80m-40m' },
-  { name: '40m', group: '80m-40m', shared: true },
-  { name: '30m', group: '30m-20m' },
-  { name: '20m', group: '30m-20m', shared: true },
-  { name: '17m', group: '17m-15m' },
-  { name: '15m', group: '17m-15m', shared: true },
-  { name: '12m', group: '12m-10m' },
-  { name: '10m', group: '12m-10m', shared: true },
+  { name: '80 / 40m', group: '80m-40m' },
+  { name: '30 / 20m', group: '30m-20m' },
+  { name: '17 / 15m', group: '17m-15m' },
+  { name: '12 / 10m', group: '12m-10m' },
 ]
 
 // ─── Rating / colour helpers ──────────────────────────────────────────────────
@@ -364,7 +360,7 @@ export default function PropagationDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {BANDS.map(({ name, group, shared }) => (
+                  {BANDS.map(({ name, group }) => (
                     <tr
                       key={name}
                       className="border-b border-gray-800/40 last:border-0 hover:bg-gray-800/20 transition-colors"
@@ -381,9 +377,6 @@ export default function PropagationDashboard() {
                   ))}
                 </tbody>
               </table>
-              <p className="px-5 py-2.5 text-[11px] text-gray-600 border-t border-gray-800/40">
-                Abgedunkelte Zeilen teilen denselben Gruppenindikator mit dem darüber stehenden Band.
-              </p>
             </div>
 
             {/* ── HamQSL solar widget ── */}
