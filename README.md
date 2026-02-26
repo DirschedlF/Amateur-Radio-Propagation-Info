@@ -34,16 +34,19 @@ Or download the standalone HTML file from the [Releases](https://github.com/Dirs
 - **A-Index** — daily geomagnetic index (Ruhig → Sturm)
 - **Sunspot Number (SSN)**
 - **Solar Wind** speed (km/s), **X-Ray** flux, **Geomagnetic field**, **Signal/Noise** level
+- **Magnetfeld Bz** — interplanetary Bz component with storm-risk colour coding
+- **Proton flux** — with NOAA S-scale level (S1–S4+)
+- **Aurora activity** — 0–9 scale with activity/storm indicator
 
 ### Band Conditions
 Colour-coded **Good / Fair / Poor** table for 80m through 10m, split into **Day** and **Night** conditions — exactly as provided by HamQSL's calculated conditions engine.
 
 | Band | Day | Night |
 |------|-----|-------|
-| 80m · 40m | 🟢 / 🟡 / 🔴 | 🟢 / 🟡 / 🔴 |
-| 30m · 20m | … | … |
-| 17m · 15m | … | … |
-| 12m · 10m | … | … |
+| 80 / 40m | 🟢 / 🟡 / 🔴 | 🟢 / 🟡 / 🔴 |
+| 30 / 20m | … | … |
+| 17 / 15m | … | … |
+| 12 / 10m | … | … |
 
 ### NOAA 3-Day Space Weather Forecast
 Full text forecast from NOAA SWPC, collapsible in the UI.
@@ -63,7 +66,7 @@ Build a fully self-contained single HTML file — no dependencies, no internet c
 | **HamQSL.com** | `hamqsl.com/solarxml.php` | Solar indices + band conditions (XML) |
 | **NOAA SWPC** | `services.swpc.noaa.gov` | 3-day space weather forecast (plain text) |
 
-> **Note on CORS:** HamQSL does not send CORS headers. The app tries a direct fetch first; if blocked by the browser, it falls back automatically to [corsproxy.io](https://corsproxy.io/).
+> **Note on CORS:** HamQSL does not send CORS headers. The app tries a direct fetch first; if blocked by the browser, it falls back automatically to a self-hosted Cloudflare Worker (`hamqsl-proxy.fritz-a2e.workers.dev`). Worker source is included under `cloudflare-worker/`.
 
 ---
 

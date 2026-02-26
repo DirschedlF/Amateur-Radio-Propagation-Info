@@ -33,7 +33,9 @@ The entire app lives in `src/PropagationDashboard.jsx` (~300 lines), consistent 
 
 **HamQSL** (`https://www.hamqsl.com/solarxml.php`) — XML endpoint, no CORS headers. Strategy:
 1. Try direct fetch first (works if user's browser/network allows it)
-2. On failure, fall back to `https://corsproxy.io/?{encodedUrl}`
+2. On failure, fall back to the self-hosted Cloudflare Worker at `https://hamqsl-proxy.fritz-a2e.workers.dev`
+
+Worker source: `cloudflare-worker/index.js` (deployed via `wrangler deploy` from `cloudflare-worker/`). The worker adds `Access-Control-Allow-Origin: *` and `Cache-Control: no-store` to ensure fresh data on every request. See `doc/security-audit.md` (SEC-01) for rationale.
 
 **NOAA SWPC** (`https://services.swpc.noaa.gov/text/3-day-forecast.txt`) — plain text, supports CORS; fetched directly.
 
@@ -48,20 +50,18 @@ Auto-refresh every 15 minutes via setInterval
 
 ### HamQSL band groups
 
-HamQSL provides one condition per group (day + night). The `BANDS` array maps display bands to their HamQSL group:
+HamQSL provides one condition per group (day + night). The `BANDS` array has 4 entries, each representing a merged pair:
 
-| Display bands | HamQSL group |
+| Display name | HamQSL group |
 |---|---|
-| 80m, 40m | `80m-40m` |
-| 30m, 20m | `30m-20m` |
-| 17m, 15m | `17m-15m` |
-| 12m, 10m | `12m-10m` |
-
-Bands with `shared: true` are visually dimmed in the table to indicate shared indicators.
+| 80 / 40m | `80m-40m` |
+| 30 / 20m | `30m-20m` |
+| 17 / 15m | `17m-15m` |
+| 12 / 10m | `12m-10m` |
 
 ### Colour-coding helpers
 
-`sfiStyle()`, `kStyle()`, `aStyle()` each return `{ card, value, sub, bar?, label }` with complete Tailwind class strings. `condStyle()` handles `Good` / `Fair` / `Poor` band condition values. **All class strings must be complete** (no dynamic construction like `bg-${color}-500`) for Tailwind JIT purging to work.
+`sfiStyle()`, `kStyle()`, `aStyle()` each return `{ card, value, sub, bar?, label }` with complete Tailwind class strings. `condStyle()` handles `Good` / `Fair` / `Poor` band condition values. `bzStyle()`, `protonStyle()`, `auroraStyle()` each return `{ label, cls }` for the `InfoPill` `valueClass` prop. **All class strings must be complete** (no dynamic construction like `bg-${color}-500`) for Tailwind JIT purging to work.
 
 ### Standalone build
 
