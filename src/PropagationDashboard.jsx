@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 'lucide-react'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -17,6 +17,13 @@ const PROP_LINKS = [
   { name: 'QSL.net Propagation',         desc: 'DX-Ausbreitung & Ressourcen',        url: 'https://dx.qsl.net/propagation/index.html' },
   { name: 'DXView HF Perspective',       desc: 'Greyline & Bänder · JN58TC',         url: 'https://hf.dxview.org/perspective/JN58TC' },
 ]
+function resolveLinks(locator) {
+  if (!locator || locator.length < 4) return PROP_LINKS
+  return PROP_LINKS.map(l => ({
+    ...l,
+    url: l.url.replace('JN58TC', locator.toUpperCase()),
+  }))
+}
 
 // Bands with their HamQSL group name.
 // HamQSL provides one condition per group (day + night), shared by the bands in it.
@@ -240,6 +247,11 @@ export default function PropagationDashboard() {
   const [sfiTrend,    setSfiTrend]    = useState(null)
   const [kTrend,      setKTrend]      = useState(null)
   const [stormDismissed, setStormDismissed] = useState(false)
+  const [showSettings,  setShowSettings]  = useState(false)
+  const [callsign,      setCallsign]      = useState(() => localStorage.getItem('prop_callsign')  ?? '')
+  const [locator,       setLocator]       = useState(() => localStorage.getItem('prop_locator')   ?? '')
+  const [draftCallsign, setDraftCallsign] = useState('')
+  const [draftLocator,  setDraftLocator]  = useState('')
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -280,6 +292,22 @@ export default function PropagationDashboard() {
     }
   }, [])
 
+  const openSettings = useCallback(() => {
+    setDraftCallsign(callsign)
+    setDraftLocator(locator)
+    setShowSettings(true)
+  }, [callsign, locator])
+
+  const saveSettings = useCallback(() => {
+    const cs  = draftCallsign.toUpperCase().trim()
+    const loc = draftLocator.toUpperCase().trim()
+    setCallsign(cs)
+    setLocator(loc)
+    localStorage.setItem('prop_callsign', cs)
+    localStorage.setItem('prop_locator',  loc)
+    setShowSettings(false)
+  }, [draftCallsign, draftLocator])
+
   useEffect(() => {
     refresh()
     const id = setInterval(refresh, AUTO_REFRESH)
@@ -318,6 +346,13 @@ export default function PropagationDashboard() {
                 Stand: {lastUpdated.toLocaleTimeString('de-DE')} Uhr
               </span>
             )}
+            <button
+              onClick={openSettings}
+              className="p-1.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800 transition-colors"
+              aria-label="Einstellungen"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
             <button
               onClick={refresh}
               disabled={loading}
@@ -496,9 +531,9 @@ export default function PropagationDashboard() {
               {showLinks && (
                 <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {PROP_LINKS.map(({ name, desc, url }) => (
+                    {resolveLinks(locator).map(({ name, desc, url }) => (
                       <a
-                        key={url}
+                        key={name}
                         href={url}
                         target="_blank"
                         rel="noreferrer"
@@ -551,6 +586,68 @@ export default function PropagationDashboard() {
         Automatische Aktualisierung alle 15 Min.
       </footer>
 
+
+      {/* ── Einstellungen-Modal ── */}
+      {showSettings && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowSettings(false)}
+        >
+          <div
+            className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-sm shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold text-gray-100 mb-5">Einstellungen</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">
+                  Rufzeichen
+                </label>
+                <input
+                  type="text"
+                  value={draftCallsign}
+                  onChange={e => setDraftCallsign(e.target.value.toUpperCase())}
+                  placeholder="z.B. DL1ABC"
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500 font-mono uppercase"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">
+                  Maidenhead-Locator
+                </label>
+                <input
+                  type="text"
+                  value={draftLocator}
+                  onChange={e => setDraftLocator(e.target.value.toUpperCase().slice(0, 6))}
+                  placeholder="z.B. JN58TC"
+                  maxLength={6}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500 font-mono uppercase"
+                />
+                <p className="text-[11px] text-gray-600 mt-1">
+                  Wird für DXView-Link verwendet
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={saveSettings}
+                className="flex-1 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm font-medium transition-colors"
+              >
+                Speichern
+              </button>
+              <button
+                onClick={() => setShowSettings(false)}
+                className="flex-1 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm font-medium text-gray-300 transition-colors"
+              >
+                Abbrechen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
