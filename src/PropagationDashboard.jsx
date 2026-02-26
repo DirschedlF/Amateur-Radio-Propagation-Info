@@ -3,7 +3,7 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const APP_VERSION  = '1.1.0'
+const APP_VERSION  = '1.2.0'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
 const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
