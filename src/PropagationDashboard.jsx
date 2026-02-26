@@ -239,10 +239,12 @@ export default function PropagationDashboard() {
   const [showLinks,   setShowLinks]   = useState(false)
   const [sfiTrend,    setSfiTrend]    = useState(null)
   const [kTrend,      setKTrend]      = useState(null)
+  const [stormDismissed, setStormDismissed] = useState(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
     setError(null)
+    setStormDismissed(false)
     try {
       const [solarResult, noaaResult] = await Promise.allSettled([
         fetchHamQSL(),
@@ -290,6 +292,9 @@ export default function PropagationDashboard() {
   const bz     = bzStyle(solar?.magneticfield)
   const proton = protonStyle(solar?.protonflux)
   const aur    = auroraStyle(solar?.aurora)
+  const kiNum     = parseInt(ki)
+  const stormG    = kiNum >= 5 ? kiNum - 4 : 0
+  const showStorm = !stormDismissed && stormG > 0
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -326,6 +331,28 @@ export default function PropagationDashboard() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-5">
+
+        {/* ── Sturm-Banner ── */}
+        {showStorm && (
+          <div className="flex items-start gap-3 bg-red-950/70 border border-red-700 rounded-xl p-4">
+            <span className="text-red-400 text-xl leading-none shrink-0">⚡</span>
+            <div className="flex-1">
+              <p className="text-sm text-red-200 font-semibold">
+                Geomagnetsturm G{stormG} aktiv (K={ki}) — HF-Ausbreitung stark gestört
+              </p>
+              <p className="text-xs text-red-400 mt-0.5">
+                Hohe Bänder (17–10 m) sind wahrscheinlich gestört. Tiefere Bänder prüfen.
+              </p>
+            </div>
+            <button
+              onClick={() => setStormDismissed(true)}
+              className="text-red-400 hover:text-red-200 transition-colors shrink-0 text-lg leading-none"
+              aria-label="Banner schließen"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         {/* ── Error banner ── */}
         {error && (
