@@ -63,6 +63,34 @@ function aStyle(v) {
   return              { card: 'bg-red-950/70',       value: 'text-red-200',     sub: 'text-red-400',     label: 'Sturm' }
 }
 
+// Interplanetary Bz: negative (southward) promotes geomagnetic storms
+function bzStyle(v) {
+  const n   = parseFloat(v)
+  const fmt = isNaN(n) ? '?' : (n > 0 ? `+${n}` : `${n}`)
+  if (isNaN(n) || n >= 0) return { label: `${fmt} nT`, cls: 'text-gray-200' }
+  if (n >= -10)           return { label: `${fmt} nT`, cls: 'text-amber-300' }
+  return                         { label: `${fmt} nT`, cls: 'text-red-300' }
+}
+
+// Proton flux — NOAA S-scale: S1 ≥ 10 pfu, S2 ≥ 100, S3 ≥ 1000, S4 ≥ 10000
+function protonStyle(v) {
+  const n = parseFloat(v)
+  if (isNaN(n) || n < 10)  return { label: `${v} pfu`,      cls: 'text-gray-200' }
+  if (n < 100)             return { label: `${v} pfu · S1`, cls: 'text-amber-300' }
+  if (n < 1000)            return { label: `${v} pfu · S2`, cls: 'text-orange-300' }
+  if (n < 10000)           return { label: `${v} pfu · S3`, cls: 'text-red-300' }
+  return                          { label: `${v} pfu · S4+`, cls: 'text-red-200' }
+}
+
+// Aurora activity (0–9 scale from HamQSL)
+function auroraStyle(v) {
+  const n = parseInt(v)
+  if (isNaN(n)) return { label: '?',              cls: 'text-gray-200' }
+  if (n <= 2)   return { label: `${n} / 9`,       cls: 'text-gray-200' }
+  if (n <= 4)   return { label: `${n} / 9 Aktiv`, cls: 'text-amber-300' }
+  return               { label: `${n} / 9 Sturm`, cls: 'text-red-300' }
+}
+
 // ─── Data fetching ────────────────────────────────────────────────────────────
 
 async function fetchHamQSL() {
@@ -97,6 +125,8 @@ function parseHamQSL(xml) {
     magneticfield: get('magneticfield'),
     geomagfield:   get('geomagfield'),
     signalnoise:   get('signalnoise'),
+    protonflux:    get('protonflux'),
+    aurora:        get('aurora'),
     bands: {},
   }
 
@@ -172,13 +202,13 @@ function MetricCard({ label, value, style: s, children }) {
   )
 }
 
-function InfoPill({ icon, label, value }) {
+function InfoPill({ icon, label, value, valueClass }) {
   return (
     <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-800 flex items-center gap-3">
       <span className="text-xl leading-none">{icon}</span>
       <div>
         <div className="text-[11px] text-gray-500 leading-none mb-1">{label}</div>
-        <div className="text-sm font-semibold text-gray-200">{value}</div>
+        <div className={`text-sm font-semibold ${valueClass ?? 'text-gray-200'}`}>{value}</div>
       </div>
     </div>
   )
@@ -223,9 +253,12 @@ export default function PropagationDashboard() {
     return () => clearInterval(id)
   }, [refresh])
 
-  const sfi = solar?.solarflux ?? '?'
-  const ki  = solar?.kindex    ?? '?'
-  const ai  = solar?.aindex    ?? '?'
+  const sfi    = solar?.solarflux    ?? '?'
+  const ki     = solar?.kindex       ?? '?'
+  const ai     = solar?.aindex       ?? '?'
+  const bz     = bzStyle(solar?.magneticfield)
+  const proton = protonStyle(solar?.protonflux)
+  const aur    = auroraStyle(solar?.aurora)
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -306,10 +339,13 @@ export default function PropagationDashboard() {
 
             {/* ── Secondary metrics ── */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <InfoPill icon="💨" label="Solarwind"       value={`${solar.solarwind} km/s`} />
-              <InfoPill icon="☢️" label="X-Ray"           value={solar.xray} />
-              <InfoPill icon="🧲" label="Geomagnetisch"   value={solar.geomagfield} />
+              <InfoPill icon="💨" label="Solarwind"         value={`${solar.solarwind} km/s`} />
+              <InfoPill icon="☢️" label="X-Ray"             value={solar.xray} />
+              <InfoPill icon="🧲" label="Geomagnetisch"     value={solar.geomagfield} />
               <InfoPill icon="📻" label="Signal / Rauschen" value={solar.signalnoise} />
+              <InfoPill icon="↕️" label="Magnetfeld Bz"     value={bz.label}     valueClass={bz.cls} />
+              <InfoPill icon="⚡" label="Protonenfluss"     value={proton.label} valueClass={proton.cls} />
+              <InfoPill icon="🌌" label="Aurora"            value={aur.label}    valueClass={aur.cls} />
             </div>
 
             {/* ── Band conditions table ── */}
