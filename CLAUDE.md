@@ -35,7 +35,7 @@ The entire app lives in `src/PropagationDashboard.jsx` (~300 lines), consistent 
 1. Try direct fetch first (works if user's browser/network allows it)
 2. On failure, fall back to the self-hosted Cloudflare Worker at `https://hamqsl-proxy.fritz-a2e.workers.dev`
 
-Worker source: `cloudflare-worker/index.js` (deployed via `wrangler deploy` from `cloudflare-worker/`). The worker adds `Access-Control-Allow-Origin: *` and `Cache-Control: no-store` to ensure fresh data on every request. See `doc/security-audit.md` (SEC-01) for rationale.
+Worker source: `cloudflare-worker/index.js` (deployed via `wrangler deploy` from `cloudflare-worker/`). The worker adds `Access-Control-Allow-Origin: *` and `Cache-Control: no-store` to ensure fresh data on every request. See `docs/security-audit.md` (SEC-01) for rationale.
 
 **NOAA SWPC** (`https://services.swpc.noaa.gov/text/3-day-forecast.txt`) — plain text, supports CORS; fetched directly.
 
