@@ -1,6 +1,6 @@
 # Security Audit — Amateur Radio Propagation Info
 
-**Version:** 1.0.0
+**Version:** 1.0.2
 **Date:** 2026-02-26
 **Auditor:** Fritz (DK9RC) / Claude Sonnet 4.6
 **Scope:** Full client-side codebase, GitHub Actions pipelines, dependency tree

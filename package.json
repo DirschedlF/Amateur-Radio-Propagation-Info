@@ -1,7 +1,7 @@
 {
   "name": "amateur-radio-propagation-info",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "HF propagation conditions dashboard for amateur radio operators",
   "scripts": {
