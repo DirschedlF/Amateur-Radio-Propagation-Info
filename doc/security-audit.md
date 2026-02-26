@@ -1,6 +1,6 @@
 # Security Audit — Amateur Radio Propagation Info
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Date:** 2026-02-26
 **Auditor:** Fritz (DK9RC) / Claude Sonnet 4.6
 **Scope:** Full client-side codebase, GitHub Actions pipelines, dependency tree
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The application is a **read-only, client-side-only dashboard** with no user input, no authentication, no backend, and no persistent storage. The attack surface is therefore very small. No critical vulnerabilities were found. Three low-severity findings and two informational items are documented below.
+The application is a **client-side-only dashboard** with no authentication, no backend, and no server-side data collection. As of v1.2.0 it accepts user input (callsign / Maidenhead locator via a settings modal) and uses `localStorage` to persist user settings and trend-comparison values. The attack surface remains very small. No critical vulnerabilities were found. Three low-severity findings and two informational items are documented below.
 
 ---
 
@@ -150,7 +150,8 @@ All direct runtime dependencies (`react`, `react-dom`, `lucide-react`) are MIT-l
 | XSS — XML parsing | ✅ `DOMParser` with `'text/xml'`; values extracted via `.textContent` only |
 | XSS — NOAA text | ✅ Rendered inside `<pre>` via React interpolation, never `innerHTML` |
 | Sensitive data in code | ✅ No API keys, tokens, or credentials anywhere |
-| User data collection | ✅ No localStorage, cookies, or network transmissions of user data |
+| User data — localStorage | ✅ `localStorage` used for callsign, locator, and trend values; all stored locally only, never transmitted |
+| User data — cookies / network | ✅ No cookies; no user data ever sent over the network |
 | Mixed content (HTTP/HTTPS) | ✅ All external URLs use HTTPS |
 | Inline scripts | ✅ None in `index.html` |
 | `dangerouslySetInnerHTML` | ✅ Not used anywhere |

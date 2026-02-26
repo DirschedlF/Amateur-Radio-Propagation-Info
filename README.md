@@ -29,14 +29,20 @@ Or download the standalone HTML file from the [Releases](https://github.com/Dirs
 ## Features
 
 ### Solar Indices
-- **Solar Flux Index (SFI)** — with colour-coded quality rating (Sehr niedrig → Exzellent)
-- **K-Index** — geomagnetic activity with visual 0–9 gauge bar (Excellent → Storm G2+)
+- **Solar Flux Index (SFI)** — with colour-coded quality rating (Sehr niedrig → Exzellent) and **trend arrow** (↑/↓) vs. previous fetch
+- **K-Index** — geomagnetic activity with visual 0–9 gauge bar (Excellent → Storm G2+) and **trend arrow** (↑/↓)
 - **A-Index** — daily geomagnetic index (Ruhig → Sturm)
 - **Sunspot Number (SSN)**
 - **Solar Wind** speed (km/s), **X-Ray** flux, **Geomagnetic field**, **Signal/Noise** level
 - **Magnetfeld Bz** — interplanetary Bz component with storm-risk colour coding
 - **Proton flux** — with NOAA S-scale level (S1–S4+)
 - **Aurora activity** — 0–9 scale with activity/storm indicator
+
+### Geomagnetic Storm Banner
+A prominent dismissable banner appears when K-Index ≥ 5, showing the NOAA G-scale level (G1–G5) and a warning that HF propagation is disturbed. Automatically reappears on the next data refresh if conditions persist.
+
+### Settings
+A gear-icon modal in the header lets you store your **callsign** and **Maidenhead locator** locally (localStorage, no server). The locator is used to personalise the DXView HF Perspective propagation link.
 
 ### Band Conditions
 Colour-coded **Good / Fair / Poor** table for 80m through 10m, split into **Day** and **Night** conditions — exactly as provided by HamQSL's calculated conditions engine.
