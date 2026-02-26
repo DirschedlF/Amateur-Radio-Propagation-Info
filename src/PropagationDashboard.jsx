@@ -219,6 +219,13 @@ function InfoPill({ icon, label, value, valueClass }) {
   )
 }
 
+function TrendArrow({ trend }) {
+  if (!trend || trend === 'same') return null
+  return trend === 'up'
+    ? <span className="text-green-400 text-xs font-bold ml-1">↑</span>
+    : <span className="text-red-400 text-xs font-bold ml-1">↓</span>
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function PropagationDashboard() {
@@ -230,6 +237,8 @@ export default function PropagationDashboard() {
   const [showNoaa,    setShowNoaa]    = useState(false)
   const [showWidget,  setShowWidget]  = useState(false)
   const [showLinks,   setShowLinks]   = useState(false)
+  const [sfiTrend,    setSfiTrend]    = useState(null)
+  const [kTrend,      setKTrend]      = useState(null)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -242,8 +251,24 @@ export default function PropagationDashboard() {
       if (solarResult.status === 'fulfilled') {
         setSolar(solarResult.value)
         setLastUpdated(new Date())
+        // Trend-Berechnung
+        const newSfi = parseInt(solarResult.value.solarflux)
+        const newKi  = parseInt(solarResult.value.kindex)
+        const oldSfi = parseInt(localStorage.getItem('prop_prev_sfi'))
+        const oldKi  = parseInt(localStorage.getItem('prop_prev_kindex'))
+
+        if (!isNaN(newSfi) && !isNaN(oldSfi)) {
+          setSfiTrend(newSfi > oldSfi ? 'up' : newSfi < oldSfi ? 'down' : 'same')
+        }
+        if (!isNaN(newKi) && !isNaN(oldKi)) {
+          setKTrend(newKi > oldKi ? 'up' : newKi < oldKi ? 'down' : 'same')
+        }
+        if (!isNaN(newSfi)) localStorage.setItem('prop_prev_sfi',    String(newSfi))
+        if (!isNaN(newKi))  localStorage.setItem('prop_prev_kindex', String(newKi))
       } else {
         setError(`HamQSL: ${solarResult.reason?.message ?? 'Unbekannter Fehler'}`)
+        setSfiTrend(null)
+        setKTrend(null)
       }
       if (noaaResult.status === 'fulfilled') {
         setNoaa(noaaResult.value)
@@ -331,8 +356,16 @@ export default function PropagationDashboard() {
 
             {/* ── Primary solar indices ── */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <MetricCard label="Solar Flux (SFI)" value={sfi} style={sfiStyle(sfi)} />
-              <MetricCard label="K-Index (Geomag)" value={ki}  style={kStyle(ki)}>
+              <MetricCard
+                label={<span>Solar Flux (SFI) <TrendArrow trend={sfiTrend} /></span>}
+                value={sfi}
+                style={sfiStyle(sfi)}
+              />
+              <MetricCard
+                label={<span>K-Index (Geomag) <TrendArrow trend={kTrend} /></span>}
+                value={ki}
+                style={kStyle(ki)}
+              >
                 <KBar value={ki} />
               </MetricCard>
               <MetricCard label="A-Index"          value={ai}  style={aStyle(ai)} />
