@@ -73,7 +73,9 @@ async function fetchHamQSL() {
     text = await r.text()
   } catch {
     // HamQSL has no CORS headers — fall back to a CORS proxy
-    const r = await fetch(CORS_PROXY + encodeURIComponent(HAMQSL_URL))
+    const r = await fetch(CORS_PROXY + encodeURIComponent(HAMQSL_URL), {
+      headers: { 'Cache-Control': 'no-cache' },
+    })
     if (!r.ok) throw new Error(`Proxy HTTP ${r.status}`)
     text = await r.text()
   }
