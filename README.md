@@ -48,6 +48,13 @@ Colour-coded **Good / Fair / Poor** table for 80m through 10m, split into **Day*
 | 17 / 15m | … | … |
 | 12 / 10m | … | … |
 
+### HamQSL Solar Widget
+The official HamQSL solar-terrestrial banner image — collapsible in the UI.
+
+### Propagation Links
+A collapsible panel with direct links to six external propagation tools:
+[DR2W DX Propagation](https://propagation.dr2w.de/), [VOACAP HF Prediction](https://www.voacap.com/hf/), [Proppy](https://soundbytes.asia/proppy/area), [NOAA Space Weather Dashboard](https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard), [QSL.net Propagation](https://dx.qsl.net/propagation/index.html), [DXView HF Perspective](https://hf.dxview.org/)
+
 ### NOAA 3-Day Space Weather Forecast
 Full text forecast from NOAA SWPC, collapsible in the UI.
 
