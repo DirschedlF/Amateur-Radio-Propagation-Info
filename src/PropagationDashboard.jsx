@@ -3,6 +3,7 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp } from 'lucide-re
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
+const APP_VERSION  = '1.0.0'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
 const CORS_PROXY   = 'https://corsproxy.io/?'
@@ -234,8 +235,11 @@ export default function PropagationDashboard() {
           <div className="flex items-center gap-2.5">
             <Radio className="w-5 h-5 text-blue-400 shrink-0" />
             <div>
-              <span className="font-semibold text-white text-sm sm:text-base">HF-Ausbreitungsbedingungen</span>
-              <span className="hidden sm:inline text-gray-500 text-xs ml-2">HamQSL + NOAA</span>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-white text-sm sm:text-base">HF-Ausbreitungsbedingungen</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 font-mono border border-blue-800/50 hidden sm:inline">v{APP_VERSION}</span>
+              </div>
+              <span className="hidden sm:block text-gray-500 text-xs">HamQSL + NOAA</span>
             </div>
           </div>
           <div className="flex items-center gap-3">

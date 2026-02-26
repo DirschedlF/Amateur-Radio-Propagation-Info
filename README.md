@@ -6,10 +6,19 @@ A lightweight, browser-based dashboard for real-time HF propagation conditions �
 
 **Developed by Fritz (DK9RC)**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2ea44f?logo=github)](https://dirschedlf.github.io/Amateur-Radio-Propagation-Info/)
+[![Latest Release](https://img.shields.io/github/v/release/DirschedlF/Amateur-Radio-Propagation-Info?label=Download&color=blue)](https://github.com/DirschedlF/Amateur-Radio-Propagation-Info/releases/latest)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwind-css)
+
+---
+
+## Live Demo
+
+**[→ dirschedlf.github.io/Amateur-Radio-Propagation-Info](https://dirschedlf.github.io/Amateur-Radio-Propagation-Info/)**
+
+Or download the standalone HTML file from the [Releases](https://github.com/DirschedlF/Amateur-Radio-Propagation-Info/releases/latest) page and open it locally — no installation needed.
 
 ---
 
@@ -56,9 +65,13 @@ Build a fully self-contained single HTML file — no dependencies, no internet c
 
 ## Getting Started
 
-### Use the standalone file
+### Try the live demo
 
-Download `propagation-info-standalone.html` from the [Releases](../../releases) page and open it directly in any modern browser — no installation needed.
+Open **[dirschedlf.github.io/Amateur-Radio-Propagation-Info](https://dirschedlf.github.io/Amateur-Radio-Propagation-Info/)** — deployed automatically from the `master` branch via GitHub Actions.
+
+### Download the standalone file
+
+Download `propagation-info-vX.X.X-standalone.html` from the [Releases](https://github.com/DirschedlF/Amateur-Radio-Propagation-Info/releases/latest) page and open it directly in any modern browser — no installation, no server needed. A new release file is created automatically when a version tag is pushed.
 
 ### Run locally (development)
 
