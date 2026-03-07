@@ -203,9 +203,14 @@ function KBar({ value }) {
   )
 }
 
-function MetricCard({ label, value, style: s, children }) {
+function MetricCard({ label, value, style: s, tooltip, children }) {
   return (
-    <div className={`rounded-xl p-5 border border-gray-800 ${s.card}`}>
+    <div className={`group relative rounded-xl p-5 border border-gray-800 ${s.card}`}>
+      {tooltip && (
+        <div className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 w-60 max-w-[calc(100vw-2rem)] px-3 py-2.5 rounded-lg bg-gray-800 border border-gray-700 text-xs text-gray-300 leading-relaxed shadow-xl">
+          {tooltip}
+        </div>
+      )}
       <div className="text-[11px] font-medium text-gray-500 mb-2 uppercase tracking-wider">{label}</div>
       <div className={`text-4xl font-bold tracking-tight ${s.value}`}>{value}</div>
       <div className={`text-xs mt-1.5 font-medium ${s.sub}`}>{s.label}</div>
@@ -214,9 +219,14 @@ function MetricCard({ label, value, style: s, children }) {
   )
 }
 
-function InfoPill({ icon, label, value, valueClass }) {
+function InfoPill({ icon, label, value, valueClass, tooltip }) {
   return (
-    <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-800 flex items-center gap-3">
+    <div className="group relative bg-gray-900 rounded-lg px-4 py-3 border border-gray-800 flex items-center gap-3">
+      {tooltip && (
+        <div className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 w-60 max-w-[calc(100vw-2rem)] px-3 py-2.5 rounded-lg bg-gray-800 border border-gray-700 text-xs text-gray-300 leading-relaxed shadow-xl">
+          {tooltip}
+        </div>
+      )}
       <span className="text-xl leading-none">{icon}</span>
       <div>
         <div className="text-[11px] text-gray-500 leading-none mb-1">{label}</div>
@@ -437,31 +447,43 @@ export default function PropagationDashboard() {
                 label={<span>Solar Flux (SFI) <TrendArrow trend={sfiTrend} /></span>}
                 value={sfi}
                 style={sfiStyle(sfi)}
+                tooltip="Solar Flux Index — Maß für solare UV/EUV-Strahlung. >150: sehr gute DX-Bedingungen auf 17–10m. <80: hohe Bänder kaum nutzbar."
               />
               <MetricCard
                 label={<span>K-Index (Geomag) <TrendArrow trend={kTrend} /></span>}
                 value={ki}
                 style={kStyle(ki)}
+                tooltip="Geomagnetischer Störungsindex (0–9), 3h-Mittel. ≤2: ideal. ≥5: Sturm G1+ — HF gestört, Polrouten besonders betroffen."
               >
                 <KBar value={ki} />
               </MetricCard>
-              <MetricCard label="A-Index"          value={ai}  style={aStyle(ai)} />
+              <MetricCard label="A-Index" value={ai} style={aStyle(ai)}
+                tooltip="Täglicher Aktivitätsindex (Tagesmittel des K). 0–7: ruhig. >29: gestört. Guter Langzeitindikator für die Ausbreitungslage."
+              />
               <MetricCard
                 label="Sonnenflecken"
                 value={solar.sunspots}
                 style={{ card: 'bg-indigo-950/40', value: 'text-indigo-300', sub: 'text-indigo-500', label: 'SSN' }}
+                tooltip="Sonnenfleckenzahl. Mehr Flecken = mehr UV = bessere Ionosphäre. Im Zyklus-Maximum sind 17–10m auch nachts offen."
               />
             </div>
 
             {/* ── Secondary metrics ── */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <InfoPill icon="💨" label="Solarwind"         value={`${solar.solarwind} km/s`} />
-              <InfoPill icon="☢️" label="X-Ray"             value={solar.xray} />
-              <InfoPill icon="🧲" label="Geomagnetisch"     value={solar.geomagfield} />
-              <InfoPill icon="📻" label="Signal / Rauschen" value={solar.signalnoise} />
-              <InfoPill icon="↕️" label="Magnetfeld Bz"     value={bz.label}     valueClass={bz.cls} />
-              <InfoPill icon="⚡" label="Protonenfluss"     value={proton.label} valueClass={proton.cls} />
-              <InfoPill icon="🌌" label="Aurora"            value={aur.label}    valueClass={aur.cls} />
+              <InfoPill icon="💨" label="Solarwind"         value={`${solar.solarwind} km/s`}
+                tooltip="Sonnenwindgeschwindigkeit. >500 km/s kann K-Index anheben und geomagnetische Störungen auslösen." />
+              <InfoPill icon="☢️" label="X-Ray"             value={solar.xray}
+                tooltip="Röntgenfluss. B/C: normal. M-Klasse: Funkaustausch möglich. X-Klasse: Kurzwellenausfall (SWF) auf der Tagseite möglich." />
+              <InfoPill icon="🧲" label="Geomagnetisch"     value={solar.geomagfield}
+                tooltip="Zustand des Erdmagnetfeldes. Quiet/Unsettled: DX-freundlich. Active/Storm: Ausbreitung gestört, bes. auf Polrouten." />
+              <InfoPill icon="📻" label="Signal / Rauschen" value={solar.signalnoise}
+                tooltip="KW-Rauschen S1–S9+. S1 = sehr ruhig (DX-freundlich). S9 = starkes Rauschen. Wichtig für Schwachlicht-DX (CW/FT8)." />
+              <InfoPill icon="↕️" label="Magnetfeld Bz"     value={bz.label}     valueClass={bz.cls}
+                tooltip="Interplanetare Bz-Komponente. Negativ = südwärts = Energie in die Magnetosphäre. <−10 nT: Sturmgefahr steigt stark." />
+              <InfoPill icon="⚡" label="Protonenfluss"     value={proton.label} valueClass={proton.cls}
+                tooltip="Hochenergetische Protonen. ≥10 pfu = S1-Ereignis — Polrouten auf KW gedämpft. X-Klasse-Eruptionen als Auslöser." />
+              <InfoPill icon="🌌" label="Aurora"            value={aur.label}    valueClass={aur.cls}
+                tooltip="Polarlicht-Intensität (0–9). Stört HF-Polrouten. Auf 2m/70cm: Aurora-Scatter-DX möglich bei Werten ≥4." />
             </div>
 
             {/* ── Band conditions table ── */}
