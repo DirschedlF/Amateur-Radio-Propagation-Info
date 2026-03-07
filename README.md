@@ -1,6 +1,6 @@
 # Amateur Radio Propagation Info
 
-**Version 1.2.0**
+**Version 1.3.0**
 
 A lightweight, browser-based dashboard for real-time HF propagation conditions — solar indices, band conditions, and NOAA space weather forecast. All data is fetched directly in the browser; no server, no registration, no data collection.
 
@@ -60,6 +60,10 @@ The official HamQSL solar-terrestrial banner image — collapsible in the UI.
 ### Propagation Links
 A collapsible panel with direct links to six external propagation tools:
 [DR2W DX Propagation](https://propagation.dr2w.de/), [VOACAP HF Prediction](https://www.voacap.com/hf/), [Proppy](https://soundbytes.asia/proppy/area), [NOAA Space Weather Dashboard](https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard), [QSL.net Propagation](https://dx.qsl.net/propagation/index.html), [DXView HF Perspective](https://hf.dxview.org/)
+
+### DX News Calendar
+
+Collapsible panel showing upcoming DX expeditions and contests from [dxnews.com](https://dxnews.com/) — loaded on demand.
 
 ### NOAA 3-Day Space Weather Forecast
 Full text forecast from NOAA SWPC, collapsible in the UI.

@@ -1,6 +1,6 @@
 # Security Audit — Amateur Radio Propagation Info
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Date:** 2026-02-26
 **Auditor:** Fritz (DK9RC) / Claude Sonnet 4.6
 **Scope:** Full client-side codebase, GitHub Actions pipelines, dependency tree
@@ -182,11 +182,11 @@ All direct runtime dependencies (`react`, `react-dom`, `lucide-react`) are MIT-l
 | `dangerouslySetInnerHTML` | ✅ Not used anywhere |
 | Timer cleanup | ✅ `setInterval` correctly cleaned up via `useEffect` return |
 | Error message injection | ✅ Error state renders `Error.message` via React — no raw HTML |
-| External script loading | ✅ None; all assets are Vite-bundled at build time |
+| External script loading | ⚠️ dxnews.com calendar script injected on demand — see SEC-04 |
 | `npm audit` | ✅ 0 vulnerabilities |
 
 ---
 
 ## Conclusion
 
-The application's client-only, read-only architecture significantly limits the attack surface. The three low-severity findings are accepted risks for the current scope of the project. No immediate action is required; the recommended mitigations can be addressed in a future maintenance release.
+The application's client-only, read-only architecture significantly limits the attack surface. The four low-severity findings are accepted risks for the current scope of the project. No immediate action is required; the recommended mitigations can be addressed in a future maintenance release.
