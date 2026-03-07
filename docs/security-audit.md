@@ -20,6 +20,7 @@ The application is a **client-side-only dashboard** with no authentication, no b
 | SEC-01 | ✅ RESOLVED | Third-party CORS proxy as data channel |
 | SEC-02 | 🟡 LOW | No Content Security Policy (CSP) |
 | SEC-03 | 🟡 LOW | GitHub Actions pinned to major-version tags, not commit SHAs |
+| SEC-04 | 🟡 LOW | Dynamic third-party script injection (dxnews.com calendar widget) |
 | INFO-01 | ℹ️ INFO | npm audit: 0 known vulnerabilities |
 | INFO-02 | ℹ️ INFO | All dependency licenses permissive (MIT / Apache-2.0 / BSD) |
 
@@ -111,6 +112,30 @@ uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 ```
 
 Tools like [Dependabot](https://docs.github.com/en/code-security/dependabot) or [pin-github-action](https://github.com/mheap/pin-github-action) can automate this.
+
+---
+
+### SEC-04 — Dynamic third-party script injection (dxnews.com calendar widget)
+
+**Severity:** Low
+**File:** `src/PropagationDashboard.jsx` — `useEffect` for DX News Calendar
+
+**Description:**
+The DX News Calendar section injects an external `<script>` tag from `https://dxnews.com/calendar.php` into `document.head` at runtime when the user opens the section for the first time. Unlike the HamQSL widget (which loads only an image), this script executes arbitrary JavaScript in the page context.
+
+If `dxnews.com` were compromised, the injected script would have full access to the page including `localStorage` keys (`prop_callsign`, `prop_locator`, trend values).
+
+Subresource Integrity (SRI) is not applicable here because `calendar.php` is a dynamic endpoint — the content changes with contest schedule updates, making a stable hash impossible.
+
+**Mitigating factors:**
+
+- The script is only loaded on explicit user interaction (opening the section).
+- No sensitive user credentials or authentication tokens are stored in `localStorage` — only callsign, Maidenhead locator, and previous SFI/K-index values.
+- An `onerror` handler provides user feedback if the script fails to load.
+- The injection uses a `useRef` guard to prevent duplicate script tags.
+
+**Recommendation:**
+Accept as a known risk. Consider adding a CSP `script-src` allowlist entry for `dxnews.com` if SEC-02 is ever addressed.
 
 ---
 

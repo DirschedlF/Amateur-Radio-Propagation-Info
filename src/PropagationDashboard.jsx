@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 'lucide-react'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -244,6 +244,7 @@ export default function PropagationDashboard() {
   const [showNoaa,    setShowNoaa]    = useState(false)
   const [showWidget,  setShowWidget]  = useState(false)
   const [showLinks,   setShowLinks]   = useState(false)
+  const [showDxNews,  setShowDxNews]  = useState(false)
   const [sfiTrend,    setSfiTrend]    = useState(null)
   const [kTrend,      setKTrend]      = useState(null)
   const [stormDismissed, setStormDismissed] = useState(false)
@@ -252,6 +253,8 @@ export default function PropagationDashboard() {
   const [locator,       setLocator]       = useState(() => localStorage.getItem('prop_locator')   ?? '')
   const [draftCallsign, setDraftCallsign] = useState('')
   const [draftLocator,  setDraftLocator]  = useState('')
+
+  const dxNewsInjected = useRef(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -313,6 +316,18 @@ export default function PropagationDashboard() {
     const id = setInterval(refresh, AUTO_REFRESH)
     return () => clearInterval(id)
   }, [refresh])
+
+  useEffect(() => {
+    if (!showDxNews || dxNewsInjected.current) return
+    dxNewsInjected.current = true
+    const s = document.createElement('script')
+    s.src = 'https://dxnews.com/calendar.php?width=21&lang=en'
+    s.onerror = () => {
+      const el = document.getElementById('DXNewsCalendar')
+      if (el) el.textContent = '(DX News Kalender nicht verfügbar)'
+    }
+    document.head.appendChild(s)
+  }, [showDxNews])
 
   const sfi    = solar?.solarflux    ?? '?'
   const ki     = solar?.kindex       ?? '?'
@@ -547,6 +562,28 @@ export default function PropagationDashboard() {
                       </a>
                     ))}
                   </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── DX News Calendar ── */}
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+              <button
+                onClick={() => setShowDxNews(v => !v)}
+                className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition-colors text-left"
+              >
+                <div>
+                  <h2 className="font-semibold text-gray-100">DX News Kalender</h2>
+                  <p className="text-xs text-gray-500 mt-0.5">dxnews.com — DX-Expeditionen & Contests</p>
+                </div>
+                {showDxNews
+                  ? <ChevronUp   className="w-4 h-4 text-gray-500 shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                }
+              </button>
+              {showDxNews && (
+                <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40">
+                  <div id="DXNewsCalendar" />
                 </div>
               )}
             </div>
