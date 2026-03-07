@@ -1,6 +1,6 @@
 # Amateur Radio Propagation Info
 
-**Version 1.3.0**
+**Version 1.3.1**
 
 A lightweight, browser-based dashboard for real-time HF propagation conditions — solar indices, band conditions, and NOAA space weather forecast. All data is fetched directly in the browser; no server, no registration, no data collection.
 
@@ -53,6 +53,10 @@ Colour-coded **Good / Fair / Poor** table for 80m through 10m, split into **Day*
 | 30 / 20m | … | … |
 | 17 / 15m | … | … |
 | 12 / 10m | … | … |
+
+### Hover Tooltips
+
+All metric cards (SFI, K-Index, A-Index, SSN) and info pills (Solar Wind, X-Ray, Bz, Proton Flux, Aurora, etc.) show an amateur-radio-relevant explanation on hover — what the value means, thresholds, and impact on HF propagation.
 
 ### HamQSL Solar Widget
 The official HamQSL solar-terrestrial banner image — collapsible in the UI.
