@@ -3,7 +3,7 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const APP_VERSION  = '1.3.1'
+const APP_VERSION  = '1.3.2'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
 const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
@@ -17,6 +17,20 @@ const PROP_LINKS = [
   { name: 'QSL.net Propagation',         desc: 'DX-Ausbreitung & Ressourcen',        url: 'https://dx.qsl.net/propagation/index.html' },
   { name: 'DXView HF Perspective',       desc: 'Greyline & Bänder · JN58TC',         url: 'https://hf.dxview.org/perspective/JN58TC' },
 ]
+const DX_LINKS = [
+  { name: 'DX World',             desc: 'DX-Nachrichten & Expeditionsberichte',      url: 'https://dx-world.net/' },
+  { name: 'NG3K Announced DX',    desc: 'Geplante DX-Expeditionen (täglich aktuell)', url: 'https://www.ng3k.com/misc/adxo.html' },
+  { name: '425 DX News',          desc: 'Wöchentliches DX-Bulletin (425DXN)',         url: 'https://www.425dxn.org/' },
+  { name: 'DXHeat Cluster',       desc: 'Live DX-Cluster mit Band-Filter',            url: 'https://dxheat.com/dxc/' },
+  { name: 'DXMAPS',               desc: 'Echtzeit-DX-Spots auf Karte',               url: 'https://www.dxmaps.com/spots/map.php' },
+  { name: 'Club Log Most Wanted', desc: 'DXCC Most-Wanted-Liste (weltweit)',          url: 'https://clublog.org/mostwanted.php' },
+  { name: 'Holy Cluster (IARC)', desc: 'Live DX-Cluster der IARC',                   url: 'https://holycluster.iarc.org/' },
+  { name: 'DXWatch',             desc: 'Live DX-Cluster-Spots & Filter',              url: 'https://dxwatch.com/' },
+  { name: 'DX Cluster HA8TKS',   desc: 'Live DX-Cluster (HA8TKS)',                   url: 'https://dxcluster.ha8tks.hu/' },
+  { name: '73 QRZ',              desc: 'DX-Spots & Amateurfunk-Community',            url: 'https://www.73qrz.com/' },
+  { name: 'OpenHamClock',        desc: 'Weltzeituhr & Greyline für Funkamateure',     url: 'https://openhamclock.com/' },
+]
+
 function resolveLinks(locator) {
   if (!locator || locator.length < 4) return PROP_LINKS
   return PROP_LINKS.map(l => ({
@@ -254,6 +268,7 @@ export default function PropagationDashboard() {
   const [showNoaa,    setShowNoaa]    = useState(false)
   const [showWidget,  setShowWidget]  = useState(false)
   const [showLinks,   setShowLinks]   = useState(false)
+  const [showDxLinks, setShowDxLinks] = useState(false)
   const [showDxNews,  setShowDxNews]  = useState(false)
   const [sfiTrend,    setSfiTrend]    = useState(null)
   const [kTrend,      setKTrend]      = useState(null)
@@ -577,6 +592,44 @@ export default function PropagationDashboard() {
                         className="flex items-start gap-3 p-3 rounded-lg bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 transition-colors group"
                       >
                         <span className="text-base leading-none mt-0.5">🔗</span>
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-gray-200 group-hover:text-white truncate">{name}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">{desc}</div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── DX Information Links ── */}
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+              <button
+                onClick={() => setShowDxLinks(v => !v)}
+                className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition-colors text-left"
+              >
+                <div>
+                  <h2 className="font-semibold text-gray-100">DX-Informations-Links</h2>
+                  <p className="text-xs text-gray-500 mt-0.5">Cluster, Expeditionen & DX-News</p>
+                </div>
+                {showDxLinks
+                  ? <ChevronUp   className="w-4 h-4 text-gray-500 shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
+                }
+              </button>
+              {showDxLinks && (
+                <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {DX_LINKS.map(({ name, desc, url }) => (
+                      <a
+                        key={name}
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 transition-colors group"
+                      >
+                        <span className="text-base leading-none mt-0.5">📡</span>
                         <div className="min-w-0">
                           <div className="text-sm font-medium text-gray-200 group-hover:text-white truncate">{name}</div>
                           <div className="text-xs text-gray-500 mt-0.5">{desc}</div>
