@@ -29,6 +29,7 @@ const DX_LINKS = [
   { name: 'DX Cluster HA8TKS',   desc: 'Live DX-Cluster (HA8TKS)',                   url: 'https://dxcluster.ha8tks.hu/' },
   { name: '73 QRZ',              desc: 'DX-Spots & Amateurfunk-Community',            url: 'https://www.73qrz.com/' },
   { name: 'OpenHamClock',        desc: 'Weltzeituhr & Greyline für Funkamateure',     url: 'https://openhamclock.com/' },
+  { name: 'DX Contest Monitor',  desc: 'Live DX-Spots & Contest-Monitoring',         url: 'https://dxcontest.org/monitor.html' },
 ]
 
 function resolveLinks(locator) {
