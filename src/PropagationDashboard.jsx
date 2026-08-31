@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 'lucide-react'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -16,10 +16,12 @@ const PROP_LINKS = [
   { name: 'NOAA Space Weather Dashboard',desc: 'Echtzeit-Weltraumwetter (NOAA)',      url: 'https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard' },
   { name: 'QSL.net Propagation',         desc: 'DX-Ausbreitung & Ressourcen',        url: 'https://dx.qsl.net/propagation/index.html' },
   { name: 'DXView HF Perspective',       desc: 'Greyline & Bänder · JN58TC',         url: 'https://hf.dxview.org/perspective/JN58TC' },
+  { name: 'Propagation-Reports',         desc: 'Archiv: tägliche Ausbreitungsberichte (PDF)', url: 'https://drive.google.com/drive/folders/1JR9fS9nVcE4OgJ92yxWjlv8E_CKmtbyM' },
 ]
 const DX_LINKS = [
   { name: 'DX World',             desc: 'DX-Nachrichten & Expeditionsberichte',      url: 'https://dx-world.net/' },
   { name: 'NG3K Announced DX',    desc: 'Geplante DX-Expeditionen (täglich aktuell)', url: 'https://www.ng3k.com/misc/adxo.html' },
+  { name: 'DX-World Timeline',    desc: 'Featured DXpeditions — Monats-Timeline',     url: 'https://www.hamradiotimeline.com/timeline/dxw_timeline_1_1.php' },
   { name: '425 DX News',          desc: 'Wöchentliches DX-Bulletin (425DXN)',         url: 'https://www.425dxn.org/' },
   { name: 'DXHeat Cluster',       desc: 'Live DX-Cluster mit Band-Filter',            url: 'https://dxheat.com/dxc/' },
   { name: 'DXMAPS',               desc: 'Echtzeit-DX-Spots auf Karte',               url: 'https://www.dxmaps.com/spots/map.php' },
@@ -29,9 +31,9 @@ const DX_LINKS = [
   { name: 'DX Cluster HA8TKS',   desc: 'Live DX-Cluster (HA8TKS)',                   url: 'https://dxcluster.ha8tks.hu/' },
   { name: '73 QRZ',              desc: 'DX-Spots & Amateurfunk-Community',            url: 'https://www.73qrz.com/' },
   { name: 'OpenHamClock',        desc: 'Weltzeituhr & Greyline für Funkamateure',     url: 'https://openhamclock.com/' },
+  { name: 'HamClock Pro',        desc: 'Web-HamClock: Greyline-Karte, Solar-Indizes & Live-DX-Spots', url: 'https://hamclock.pro/' },
   { name: 'DX Contest Monitor',  desc: 'Live DX-Spots & Contest-Monitoring',         url: 'https://dxcontest.org/monitor.html' },
   { name: 'DXCC Analyzer Pro',   desc: 'ADIF-Logbuch-Analyse & DXCC-Tracking',        url: 'https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/' },
-  { name: 'Propagation-Reports', desc: 'Archiv: tägliche Ausbreitungsberichte (PDF)',  url: 'https://drive.google.com/drive/folders/1JR9fS9nVcE4OgJ92yxWjlv8E_CKmtbyM' },
 ]
 
 function resolveLinks(locator) {
@@ -272,7 +274,6 @@ export default function PropagationDashboard() {
   const [showWidget,  setShowWidget]  = useState(false)
   const [showLinks,   setShowLinks]   = useState(false)
   const [showDxLinks, setShowDxLinks] = useState(false)
-  const [showDxNews,  setShowDxNews]  = useState(false)
   const [sfiTrend,    setSfiTrend]    = useState(null)
   const [kTrend,      setKTrend]      = useState(null)
   const [stormDismissed, setStormDismissed] = useState(false)
@@ -281,8 +282,6 @@ export default function PropagationDashboard() {
   const [locator,       setLocator]       = useState(() => localStorage.getItem('prop_locator')   ?? '')
   const [draftCallsign, setDraftCallsign] = useState('')
   const [draftLocator,  setDraftLocator]  = useState('')
-
-  const dxNewsInjected = useRef(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -344,18 +343,6 @@ export default function PropagationDashboard() {
     const id = setInterval(refresh, AUTO_REFRESH)
     return () => clearInterval(id)
   }, [refresh])
-
-  useEffect(() => {
-    if (!showDxNews || dxNewsInjected.current) return
-    dxNewsInjected.current = true
-    const s = document.createElement('script')
-    s.src = 'https://dxnews.com/calendar.php?width=21&lang=en'
-    s.onerror = () => {
-      const el = document.getElementById('DXNewsCalendar')
-      if (el) el.textContent = '(DX News Kalender nicht verfügbar)'
-    }
-    document.head.appendChild(s)
-  }, [showDxNews])
 
   const sfi    = solar?.solarflux    ?? '?'
   const ki     = solar?.kindex       ?? '?'
@@ -640,28 +627,6 @@ export default function PropagationDashboard() {
                       </a>
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* ── DX News Calendar ── */}
-            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
-              <button
-                onClick={() => setShowDxNews(v => !v)}
-                className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition-colors text-left"
-              >
-                <div>
-                  <h2 className="font-semibold text-gray-100">DX News Kalender</h2>
-                  <p className="text-xs text-gray-500 mt-0.5">dxnews.com — DX-Expeditionen & Contests</p>
-                </div>
-                {showDxNews
-                  ? <ChevronUp   className="w-4 h-4 text-gray-500 shrink-0" />
-                  : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />
-                }
-              </button>
-              {showDxNews && (
-                <div className="px-5 py-4 border-t border-gray-800 bg-gray-950/40">
-                  <div id="DXNewsCalendar" />
                 </div>
               )}
             </div>

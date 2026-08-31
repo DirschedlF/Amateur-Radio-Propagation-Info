@@ -63,15 +63,11 @@ The official HamQSL solar-terrestrial banner image — collapsible in the UI.
 
 ### Propagation Links
 A collapsible panel with direct links to six external propagation tools:
-[DR2W DX Propagation](https://propagation.dr2w.de/), [VOACAP HF Prediction](https://www.voacap.com/hf/), [Proppy](https://soundbytes.asia/proppy/area), [NOAA Space Weather Dashboard](https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard), [QSL.net Propagation](https://dx.qsl.net/propagation/index.html), [DXView HF Perspective](https://hf.dxview.org/)
+[DR2W DX Propagation](https://propagation.dr2w.de/), [VOACAP HF Prediction](https://www.voacap.com/hf/), [Proppy](https://soundbytes.asia/proppy/area), [NOAA Space Weather Dashboard](https://www.spaceweather.gov/communities/space-weather-enthusiasts-dashboard), [QSL.net Propagation](https://dx.qsl.net/propagation/index.html), [DXView HF Perspective](https://hf.dxview.org/), [Propagation-Report Archiv](https://drive.google.com/drive/folders/1JR9fS9nVcE4OgJ92yxWjlv8E_CKmtbyM)
 
 ### DX Information Links
 A collapsible panel with links to DX clusters, expedition announcements, and DX news:
-[DX World](https://dx-world.net/), [NG3K Announced DX](https://www.ng3k.com/misc/adxo.html), [425 DX News](https://www.425dxn.org/), [DXHeat Cluster](https://dxheat.com/dxc/), [DXMAPS](https://www.dxmaps.com/spots/map.php), [Club Log Most Wanted](https://clublog.org/mostwanted.php), [Holy Cluster (IARC)](https://holycluster.iarc.org/), [DXWatch](https://dxwatch.com/), [DX Cluster HA8TKS](https://dxcluster.ha8tks.hu/), [73 QRZ](https://www.73qrz.com/), [OpenHamClock](https://openhamclock.com/), [DX Contest Monitor](https://dxcontest.org/monitor.html), [DXCC Analyzer Pro](https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/), [Propagation-Report Archiv](https://drive.google.com/drive/folders/1JR9fS9nVcE4OgJ92yxWjlv8E_CKmtbyM)
-
-### DX News Calendar
-
-Collapsible panel showing upcoming DX expeditions and contests from [dxnews.com](https://dxnews.com/) — loaded on demand.
+[DX World](https://dx-world.net/), [NG3K Announced DX](https://www.ng3k.com/misc/adxo.html), [DX-World Timeline](https://www.hamradiotimeline.com/timeline/dxw_timeline_1_1.php), [425 DX News](https://www.425dxn.org/), [DXHeat Cluster](https://dxheat.com/dxc/), [DXMAPS](https://www.dxmaps.com/spots/map.php), [Club Log Most Wanted](https://clublog.org/mostwanted.php), [Holy Cluster (IARC)](https://holycluster.iarc.org/), [DXWatch](https://dxwatch.com/), [DX Cluster HA8TKS](https://dxcluster.ha8tks.hu/), [73 QRZ](https://www.73qrz.com/), [OpenHamClock](https://openhamclock.com/), [HamClock Pro](https://hamclock.pro/), [DX Contest Monitor](https://dxcontest.org/monitor.html), [DXCC Analyzer Pro](https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/)
 
 ### NOAA 3-Day Space Weather Forecast
 Full text forecast from NOAA SWPC, collapsible in the UI.
