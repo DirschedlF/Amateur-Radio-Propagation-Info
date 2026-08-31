@@ -1,6 +1,6 @@
 # Amateur Radio Propagation Info
 
-**Version 1.3.4**
+**Version 1.3.5**
 
 A lightweight, browser-based dashboard for real-time HF propagation conditions — solar indices, band conditions, and NOAA space weather forecast. All data is fetched directly in the browser; no server, no registration, no data collection.
 
