@@ -1,6 +1,6 @@
 # Amateur Radio Propagation Info
 
-**Version 1.3.5**
+**Version 1.3.6**
 
 A lightweight, browser-based dashboard for real-time HF propagation conditions — solar indices, band conditions, and NOAA space weather forecast. All data is fetched directly in the browser; no server, no registration, no data collection.
 
@@ -67,7 +67,7 @@ A collapsible panel with direct links to six external propagation tools:
 
 ### DX Information Links
 A collapsible panel with links to DX clusters, expedition announcements, and DX news:
-[DX World](https://dx-world.net/), [NG3K Announced DX](https://www.ng3k.com/misc/adxo.html), [DX-World Timeline](https://www.hamradiotimeline.com/timeline/dxw_timeline_1_1.php), [425 DX News](https://www.425dxn.org/), [DXHeat Cluster](https://dxheat.com/dxc/), [DXMAPS](https://www.dxmaps.com/spots/map.php), [Club Log Most Wanted](https://clublog.org/mostwanted.php), [Holy Cluster (IARC)](https://holycluster.iarc.org/), [DXWatch](https://dxwatch.com/), [DX Cluster HA8TKS](https://dxcluster.ha8tks.hu/), [73 QRZ](https://www.73qrz.com/), [OpenHamClock](https://openhamclock.com/), [HamClock Pro](https://hamclock.pro/), [DX Contest Monitor](https://dxcontest.org/monitor.html), [DXCC Analyzer Pro](https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/)
+[DX World](https://dx-world.net/), [NG3K Announced DX](https://www.ng3k.com/misc/adxo.html), [DX-World Timeline](https://www.hamradiotimeline.com/timeline/dxw_timeline_1_1.php), [425 DX News](https://www.425dxn.org/), [DXHeat Cluster](https://dxheat.com/dxc/), [DXMAPS](https://www.dxmaps.com/spots/map.php), [Club Log Most Wanted](https://clublog.org/mostwanted.php), [Holy Cluster (IARC)](https://holycluster.iarc.org/), [DXWatch](https://dxwatch.com/), [DX Cluster HA8TKS](https://dxcluster.ha8tks.hu/), [73 QRZ](https://www.73qrz.com/), [OpenHamClock](https://openhamclock.com/), [HamClock Pro](https://hamclock.pro/), [DX Contest Monitor](https://dxcontest.org/monitor.html), [GDXF](https://www.gdxf.de/), [DXLook](https://www.dxlook.de/), [Amateur Radio Frequency Germany](https://dirschedlf.github.io/Amateur-Radio-Frequency-Germany/), [DXCC Analyzer Pro](https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/)
 
 ### NOAA 3-Day Space Weather Forecast
 Full text forecast from NOAA SWPC, collapsible in the UI.

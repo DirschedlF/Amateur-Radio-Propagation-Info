@@ -3,7 +3,7 @@ import { RefreshCw, Radio, AlertCircle, ChevronDown, ChevronUp, Settings } from 
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const APP_VERSION  = '1.3.5'
+const APP_VERSION  = '1.3.6'
 const HAMQSL_URL   = 'https://www.hamqsl.com/solarxml.php'
 const HAMQSL_PROXY = 'https://hamqsl-proxy.fritz-a2e.workers.dev'
 const NOAA_URL     = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
@@ -33,6 +33,9 @@ const DX_LINKS = [
   { name: 'OpenHamClock',        desc: 'Weltzeituhr & Greyline für Funkamateure',     url: 'https://openhamclock.com/' },
   { name: 'HamClock Pro',        desc: 'Web-HamClock: Greyline-Karte, Solar-Indizes & Live-DX-Spots', url: 'https://hamclock.pro/' },
   { name: 'DX Contest Monitor',  desc: 'Live DX-Spots & Contest-Monitoring',         url: 'https://dxcontest.org/monitor.html' },
+  { name: 'GDXF',                desc: 'German DX Foundation — DX-News & Informationen', url: 'https://www.gdxf.de/' },
+  { name: 'DXLook',              desc: 'DX-Cluster, Spots & Rufzeichen-Suche',        url: 'https://www.dxlook.de/' },
+  { name: 'Amateur Radio Frequency Germany', desc: 'Deutsche Amateurfunk-Frequenzbereiche (AFuV, Klassen A/E/N)', url: 'https://dirschedlf.github.io/Amateur-Radio-Frequency-Germany/' },
   { name: 'DXCC Analyzer Pro',   desc: 'ADIF-Logbuch-Analyse & DXCC-Tracking',        url: 'https://dirschedlf.github.io/Amateur-Radio-DXCC-Analyzer-Pro/' },
 ]
 

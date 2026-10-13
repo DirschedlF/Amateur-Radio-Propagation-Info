@@ -94,7 +94,7 @@ HamQSL provides one condition per group (day + night). The `BANDS` array has 4 e
 | `NOAA_URL` | `https://services.swpc.noaa.gov/text/3-day-forecast.txt` |
 | `AUTO_REFRESH` | `15 * 60 * 1000` (15 minutes) |
 | `PROP_LINKS` | Array of 7 external propagation tools (DR2W, VOACAP, Proppy, NOAA, QSL.net, DXView, Propagation-Reports) |
-| `DX_LINKS` | Array of 15 external DX resources (DX World, NG3K, DX-World Timeline, 425 DX News, DXHeat, DXMAPS, Club Log, Holy Cluster, DXWatch, HA8TKS, 73 QRZ, OpenHamClock, HamClock Pro, DX Contest Monitor, DXCC Analyzer Pro) |
+| `DX_LINKS` | Array of 18 external DX resources (DX World, NG3K, DX-World Timeline, 425 DX News, DXHeat, DXMAPS, Club Log, Holy Cluster, DXWatch, HA8TKS, 73 QRZ, OpenHamClock, HamClock Pro, DX Contest Monitor, GDXF, DXLook, Amateur Radio Frequency Germany, DXCC Analyzer Pro) |
 
 ### localStorage keys
 
@@ -130,7 +130,7 @@ Good/Fair/Poor for 80/40m, 30/20m, 17/15m, 12/10m (day + night).
 Each section toggles via header click:
 - HamQSL Solar Widget (hamqsl.com banner image)
 - Propagation Links (7 external tools, DXView link personalised via locator)
-- DX Information Links (15 external resources)
+- DX Information Links (18 external resources)
 - NOAA 3-Day Forecast (plain text from SWPC)
 
 ### Settings Modal
