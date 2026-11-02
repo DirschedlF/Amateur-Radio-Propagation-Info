@@ -4,3 +4,4 @@ dist-standalone
 .DS_Store
 *.local
 .claude/
+.playwright-mcp/
